@@ -17,6 +17,7 @@ import { GoogleButton } from "./button/GoogleButton";
 import { useDisclosure } from '@mantine/hooks';
 import { useAuthStore } from '@/app/store/authStore';
 import { useLogin, useRegister } from "@/app/hook/useAuth";
+import { notifications } from '@mantine/notifications';
 
 export function Login(props: PaperProps) {
   const [type, press] = useToggle(["login", "register"]);
@@ -57,10 +58,40 @@ export function Login(props: PaperProps) {
   });
   const handleSubmit = (values: typeof form.values) => {
     if (type === "register") {
-      registerMutation.mutate(values);
+      registerMutation.mutate(values, {
+        onSuccess: () => {
+          notifications.show({
+            title: 'Registration Successful',
+            message: 'You have registered successfully!',
+            color: 'green',
+          });
+        },
+        onError: (error) => {
+          notifications.show({
+            title: 'Registration Failed',
+            message: error.message || 'Registration failed!',
+            color: 'red',
+          });
+        },
+      });
       console.log("Registering user with values:", values);
     } else if (type === "login") {
-      loginMutation.mutate(values);
+      loginMutation.mutate(values, {
+        onSuccess: () => {
+          notifications.show({
+            title: 'Login Successful',
+            message: 'You have logged in successfully!',
+            color: 'green',
+          });
+        },
+        onError: (error) => {
+          notifications.show({
+            title: 'Login Failed',
+            message: error.message || 'Login failed!',
+            color: 'red',
+          });
+        },
+      });
       console.log("Logging in with values:", values);
     }
     form.reset();
