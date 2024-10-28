@@ -24,6 +24,7 @@ export function Login(props: PaperProps) {
       first_name: "",
       last_name: "",
       password: "",
+      password_confirmation: "",
     },
     validate: {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : "Invalid email"),
@@ -31,9 +32,12 @@ export function Login(props: PaperProps) {
         val.length <= 6
           ? "Password should include at least 6 characters"
           : null,
-        first_name: (val) => (val.length <= 0 ? "First name is required" : null),
-        last_name: (val) => (val.length <= 0 ? "Last name is required" : null),
-        user_name: (val) => (val.length <= 0 ? "Username is required" : null),
+      password_confirmation: (val): string | null =>
+        val !== form.values.password ? "Passwords do not match" : null,
+      first_name: (val) => (val.length <= 0 ? "First name is required" : null),
+      last_name: (val) => (val.length <= 0 ? "Last name is required" : null),
+      user_name: (val) => (val.length <= 0 ? "Username is required" : null),
+
     },
   });
   const handleSubmit =  (values: typeof form.values) => {
@@ -113,6 +117,22 @@ export function Login(props: PaperProps) {
             radius="md"
           />
 
+        {type === "register" && (
+          <PasswordInput
+            required
+            label="Confirm Password"
+            placeholder="Your password"
+            value={form.values.password_confirmation}
+            onChange={(event) =>
+              form.setFieldValue("password_confirmation", event.currentTarget.value)
+            }
+            error={
+              form.errors.password_confirmation &&
+              "Passwords do not match"
+            }
+            radius="md"
+          />
+        )}
           <Group justify="space-between" mt="md">
             <Anchor
               component="button"
