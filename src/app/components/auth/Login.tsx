@@ -29,7 +29,9 @@ export function Login(props: PaperProps) {
       password_confirmation: "",
     },
     validate: {
-      email: (val) => (/^\S+@\S+$/.test(val) ? null : "Invalid email"),
+      email: (val) => type === "register" && (/^\S+@\S+$/.test(val)
+          ? null 
+          : "Invalid email"),
       password: (val) =>
         val.length <= 6
           ? "Password should include at least 6 characters"
@@ -44,10 +46,9 @@ export function Login(props: PaperProps) {
       last_name: (val) => (type === "register" && val.length <= 0 
         ? "Last name is required" 
         : null),
-      user_name: (val) => (type === "register" && val.length <= 0 
+      user_name: (val) => (val.length <= 0 
         ? "Username is required" 
         : null),
-
     },
   });
   const handleSubmit = (values: typeof form.values) => {
@@ -92,6 +93,7 @@ export function Login(props: PaperProps) {
             </Flex> 
           )}
 
+        {type === "register" && (
           <TextInput
             required
             label="Email"
@@ -103,8 +105,7 @@ export function Login(props: PaperProps) {
             error={form.errors.email && "Invalid email"}
             radius="md"
           />
-
-         {type === "register" && (
+          )}
           <TextInput
             required
             label="Username"
@@ -116,7 +117,6 @@ export function Login(props: PaperProps) {
             error={form.errors.user_name && "Invalid user_name"}
             radius="md"
           />
-          )}
 
           <PasswordInput
             required
