@@ -35,17 +35,29 @@ export function Login(props: PaperProps) {
           ? "Password should include at least 6 characters"
           : null,
       password_confirmation: (val): string | null =>
-        val !== form.values.password ? "Passwords do not match" : null,
-      first_name: (val) => (val.length <= 0 ? "First name is required" : null),
-      last_name: (val) => (val.length <= 0 ? "Last name is required" : null),
-      user_name: (val) => (val.length <= 0 ? "Username is required" : null),
+        type === "register" && val !== form.values.password
+          ? "Passwords do not match" 
+          : null,
+      first_name: (val) => (type === "register" && val.length <= 0 
+          ? "First name is required" 
+          : null),
+      last_name: (val) => (type === "register" && val.length <= 0 
+        ? "Last name is required" 
+        : null),
+      user_name: (val) => (type === "register" && val.length <= 0 
+        ? "Username is required" 
+        : null),
 
     },
   });
-  const handleSubmit =  (values: typeof form.values) => {
-    console.log(values);
+  const handleSubmit = (values: typeof form.values) => {
+    if (type === "register") {
+      console.log("Registering user with values:", values);
+    } else if (type === "login") {
+      console.log("Logging in with values:", values);
+    }
     form.reset();
-  }
+  };
 
   return (
     <Paper radius="md" p="xl" shadow="lg" withBorder {...props}>
@@ -92,6 +104,7 @@ export function Login(props: PaperProps) {
             radius="md"
           />
 
+         {type === "register" && (
           <TextInput
             required
             label="Username"
@@ -103,6 +116,7 @@ export function Login(props: PaperProps) {
             error={form.errors.user_name && "Invalid user_name"}
             radius="md"
           />
+          )}
 
           <PasswordInput
             required
@@ -121,7 +135,7 @@ export function Login(props: PaperProps) {
             radius="md"
           />
 
-        {type === "register" && (
+         {type === "register" && (
           <PasswordInput
             required
             label="Confirm Password"
@@ -138,13 +152,17 @@ export function Login(props: PaperProps) {
             }
             radius="md"
           />
-        )}
+          )}
+
           <Group justify="space-between" mt="md">
             <Anchor
               component="button"
               type="button"
               c="dimmed"
-              onClick={() => press()}
+              onClick={() => {
+                press(); 
+                form.reset();
+              }}
               size="xs"
             >
               {type === "register"
