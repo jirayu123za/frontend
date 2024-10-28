@@ -14,9 +14,11 @@ import {
   Flex,
 } from "@mantine/core";
 import { GoogleButton } from "./button/GoogleButton";
+import { useDisclosure } from '@mantine/hooks';
 
 export function Login(props: PaperProps) {
-  const [type, toggle] = useToggle(["login", "register"]);
+  const [type, press] = useToggle(["login", "register"]);
+  const [visible, { toggle }] = useDisclosure(false);
   const form = useForm({
     initialValues: {
       email: "",
@@ -107,6 +109,8 @@ export function Login(props: PaperProps) {
             label="Password"
             placeholder="Your password"
             value={form.values.password}
+            visible={visible}
+            onVisibilityChange={toggle}
             onChange={(event) =>
               form.setFieldValue("password", event.currentTarget.value)
             }
@@ -123,6 +127,8 @@ export function Login(props: PaperProps) {
             label="Confirm Password"
             placeholder="Your password"
             value={form.values.password_confirmation}
+            visible={visible}
+            onVisibilityChange={toggle}
             onChange={(event) =>
               form.setFieldValue("password_confirmation", event.currentTarget.value)
             }
@@ -138,7 +144,7 @@ export function Login(props: PaperProps) {
               component="button"
               type="button"
               c="dimmed"
-              onClick={() => toggle()}
+              onClick={() => press()}
               size="xs"
             >
               {type === "register"
