@@ -16,11 +16,14 @@
     "@mantine/modals": "^7.13.4",
     "@mantine/notifications": "^7.13.4",
     "@mantine/nprogress": "^7.13.4",
+    "@types/react-query": "^1.2.9",
+    "axios": "^1.7.7",
     "dayjs": "^1.11.13",
     "next": "15.0.1",
     "next-auth": "^4.24.10",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-query": "^3.39.3"
   },
   "devDependencies": {
     "@types/node": "^20",
