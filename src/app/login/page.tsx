@@ -1,10 +1,15 @@
 'use client';
-import { Container, Image, Title } from '@mantine/core'
 import React from 'react'
+import { Container, Image, Title } from '@mantine/core'
 import { Login } from '../components/auth/Login';
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 export default function loginPage() {
   return (
+    <QueryClientProvider client={queryClient}>
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
     <div className="hidden lg:flex justify-center items-center h-screen">
       <Image
@@ -30,5 +35,7 @@ export default function loginPage() {
       </Container>
     </div>
   </div>
+  <ReactQueryDevtools initialIsOpen={false} />
+  </QueryClientProvider>
   )
 }

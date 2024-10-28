@@ -15,10 +15,14 @@ import {
 } from "@mantine/core";
 import { GoogleButton } from "./button/GoogleButton";
 import { useDisclosure } from '@mantine/hooks';
+import { useAuthStore } from '@/app/store/authStore';
+import { useLogin, useRegister } from "@/app/hook/useAuth";
 
 export function Login(props: PaperProps) {
   const [type, press] = useToggle(["login", "register"]);
   const [visible, { toggle }] = useDisclosure(false);
+  const loginMutation = useLogin();
+  const registerMutation = useRegister();
   const form = useForm({
     initialValues: {
       email: "",
@@ -53,8 +57,10 @@ export function Login(props: PaperProps) {
   });
   const handleSubmit = (values: typeof form.values) => {
     if (type === "register") {
+      registerMutation.mutate(values);
       console.log("Registering user with values:", values);
     } else if (type === "login") {
+      loginMutation.mutate(values);
       console.log("Logging in with values:", values);
     }
     form.reset();
@@ -169,7 +175,7 @@ export function Login(props: PaperProps) {
                 ? "Already have an account? Login"
                 : "Don't have an account? Register"}
             </Anchor>
-            <Button type="submit" radius="xl" className="shadow-sm">
+            <Button type="submit" radius="xl" className="shadow-sm" loading={loginMutation.status === 'pending' || registerMutation.status === 'pending'}>
               {upperFirst(type)}
             </Button>
           </Group>
