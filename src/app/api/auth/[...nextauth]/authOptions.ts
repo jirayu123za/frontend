@@ -1,0 +1,74 @@
+import NextAuth from 'next-auth';
+import axios from 'axios';
+import { JWT } from "next-auth/jwt";
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { AuthOptions, ISODateString, User } from "next-auth";
+
+export interface CustomSession {
+    user?: CustomUser;
+    expires: ISODateString;
+}
+
+export interface CustomUser {
+    id?: string | null;
+    first_name?: string | null;
+    last_name?: string | null;
+    email?: string | null;
+    profile_image?: string | null;
+    token?: string | null;
+    created_at?: string | null;
+    updated_at?: string | null;
+}
+
+export const authOptions: AuthOptions = {
+    providers: [
+        CredentialsProvider({
+            name: "Credentials",
+            credentials: {
+                user_name: {},
+                password: {},
+            },
+            async authorize(credentials) {
+                const res = await axios.post(
+                    "http://localhost:8000/api/auth/login",
+                    credentials
+                );
+                const response = res.data;
+                const user = response?.user;
+                if (user) {
+                    return user;
+                } else {
+                    return null;
+                }
+            },
+        }),
+    ],
+    pages: {
+        signIn: '/login',
+    },
+    callbacks: {
+        async jwt({ token, user, trigger, session }) {
+            if (trigger === "update" && session?.profile_image) {
+                const user: CustomUser = token.user as CustomUser;
+                user.profile_image = session?.profile_image;
+                console.log("The token is", token);
+            }
+            if (user) {
+                token.user = user;
+            }
+            return token;
+        },
+        async session({
+            session,
+            token,
+            user,
+        }: {
+            session: CustomSession;
+            token: JWT;
+            user: User;
+        }) {
+            session.user = token.user as CustomUser;
+            return session;
+        },
+    },
+}
