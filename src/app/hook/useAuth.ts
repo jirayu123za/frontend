@@ -1,7 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import { useAuthStore } from '../store/authStore';
 import axios from 'axios';
-import { signIn } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
+import { ISODateString } from 'next-auth';
 
 interface LoginData {
     user_name: string;
@@ -15,6 +16,22 @@ interface RegisterData {
     last_name: string;
     password: string;
     password_confirmation: string;
+}
+
+export interface CustomSession {
+    user?: CustomUser;
+    expires: ISODateString;
+}
+
+export interface CustomUser {
+    id?: string | null;
+    first_name?: string | null;
+    last_name?: string | null;
+    email?: string | null;
+    profile_image?: string | null;
+    token?: string | null;
+    created_at?: string | null;
+    updated_at?: string | null;
 }
 
 const loginApi = async (data: LoginData) => {
@@ -33,8 +50,13 @@ const checkCredentialsApi = async (data: LoginData) => {
     return response.data;
 };
 
-const logoutApi = async (data: any) => {
-    const response = await axios.post('http://localhost:8000/api/auth/logout', data);
+const logoutApi = async (token: string) => {
+    console.log("Sending token:", token);
+    const response = await axios.post('http://localhost:8000/api/auth/logout', {}, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        }
+    });
     return response.data;
 }
 
@@ -96,11 +118,22 @@ export const useRegister = () => {
 };
 
 export const useLogout = () => {
-    const setUser = useAuthStore((state) => state.setUser);
+    // const setUser = useAuthStore((state) => state.setUser);
+    const { data: session } = useSession();
+    const customSession = session as CustomSession | null;
+    const token = customSession?.user?.token;
+
+    console.log("Token being sent useLogout :", token);
+
     return useMutation({
-        mutationFn: logoutApi,
+        mutationFn: () => logoutApi(token!),
         onSuccess: () => {
-            setUser(null);
+            // setUser(null);
+            signOut({
+                callbackUrl: "/",
+                redirect: true,
+            });
+            console.log("User has been logged out");
         },
     });
 };

@@ -1,34 +1,41 @@
 "use client";
-
-import { getServerSession } from 'next-auth';
-import { useSession } from 'next-auth/react';
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from 'react';
-// import { useSession } from "next-auth/react";
+import { useSession } from 'next-auth/react';
+import { Button, Flex } from '@mantine/core';
+import { useLogout } from './hook/useAuth';
 // import { useAuthStore } from './store/authStore';
 
 export default function App() {
+  const logoutMutation = useLogout();
   const { data: session } = useSession();
-  const queryClient = new QueryClient();
-  // const { user } = useAuthStore(); 
-  // const session = await getServerSession();
+  // const { user } = useAuthStore();
+
+  const handleLogout = () => {
+    logoutMutation.mutate(undefined, {
+      onSuccess: () => {
+        console.log('Logout successful');
+      },
+      onError: (error) => {
+        console.error('Logout failed', error);
+      },
+    });
+    console.log('Logout button clicked');
+  }
+
   return (
-    <QueryClientProvider client={queryClient}>
     <div>
+      <Flex className='p-3'>
+        <Button onClick={handleLogout}> logout </Button>
+      </Flex>
       Test Current Date: {new Date().toLocaleDateString()}
       <pre>{JSON.stringify(session, null, 2)}</pre>
-      {/* <div>{user ? JSON.stringify(user) : "No user data"}</div> */}
       {session ? (
         <>
-          <p>Welcome, {session.user?.name}</p>
           <p>Email: {session.user?.email}</p>
         </>
       ) : (
         <p>No session data available</p>
       )}
     </div>
-    <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
   );
 }
