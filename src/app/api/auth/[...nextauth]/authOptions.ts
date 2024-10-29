@@ -31,13 +31,14 @@ export const authOptions: AuthOptions = {
             async authorize(credentials) {
                 try {
                     const res = await axios.post(
-                        // "http://localhost:8000/api/auth/login",
-                        "http://localhost:8000/api/auth/checkCredentials",
+                        "http://localhost:8000/api/auth/login",
+                        // "http://localhost:8000/api/auth/checkCredentials",
                         credentials
                     );
-                    const response = res.data;
-                    const user = response?.user;
+
+                    const user = res.data?.user;
                     if (user) {
+                        console.log("User is", user);
                         return user;
                     } else {
                         return null;

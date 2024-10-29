@@ -85,7 +85,6 @@ export function Login(props: PaperProps) {
             message: 'You have logged in successfully!',
             color: 'green',
           });
-          router.push('/');
         },
         onError: (error) => {
           notifications.show({
