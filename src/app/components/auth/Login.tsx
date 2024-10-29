@@ -18,10 +18,12 @@ import { useDisclosure } from '@mantine/hooks';
 import { useAuthStore } from '@/app/store/authStore';
 import { useLogin, useRegister } from "@/app/hook/useAuth";
 import { notifications } from '@mantine/notifications';
+import { useRouter } from "next/navigation";
 
 export function Login(props: PaperProps) {
   const [type, press] = useToggle(["login", "register"]);
   const [visible, { toggle }] = useDisclosure(false);
+  const router = useRouter();
   const loginMutation = useLogin();
   const registerMutation = useRegister();
   const form = useForm({
@@ -83,6 +85,7 @@ export function Login(props: PaperProps) {
             message: 'You have logged in successfully!',
             color: 'green',
           });
+          router.push('/');
         },
         onError: (error) => {
           notifications.show({

@@ -29,18 +29,23 @@ export const authOptions: AuthOptions = {
                 password: {},
             },
             async authorize(credentials) {
-                const res = await axios.post(
-                    "http://localhost:8000/api/auth/login",
-                    credentials
-                );
-                const response = res.data;
-                const user = response?.user;
-                if (user) {
-                    return user;
-                } else {
+                try {
+                    const res = await axios.post(
+                        "http://localhost:8000/api/auth/login",
+                        credentials
+                    );
+                    const response = res.data;
+                    const user = response?.user;
+                    if (user) {
+                        return user;
+                    } else {
+                        return null;
+                    }
+                } catch (error) {
+                    console.error("Authorization error:", error);
                     return null;
                 }
-            },
+            }
         }),
     ],
     pages: {
