@@ -3,6 +3,7 @@ import { useAuthStore } from '../store/authStore';
 import axios from 'axios';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { ISODateString } from 'next-auth';
+import { notifications } from '@mantine/notifications';
 
 interface LoginData {
     user_name: string;
@@ -77,6 +78,11 @@ export const useLogin = () => {
                     user_name,
                     password,
                 });
+                notifications.show({
+                    title: 'Login Successful',
+                    message: 'You have logged in successfully!',
+                    color: 'green',
+                });
                 console.log("The response from signIn is:", res);
                 return res;
             } else {
@@ -84,6 +90,11 @@ export const useLogin = () => {
             }
         },
         onError: (error) => {
+            notifications.show({
+                title: 'Login Failed',
+                message: error.message || 'Login failed!',
+                color: 'red',
+            });
             console.error("Login failed with error:", error);
         },
     });
@@ -105,6 +116,11 @@ export const useRegister = () => {
                     user_name,
                     password,
                 });
+                notifications.show({
+                    title: 'Registration Successful',
+                    message: 'You have registered successfully!',
+                    color: 'green',
+                });
                 console.log("The response from signIn is:", res);
                 return res;
             } else {
@@ -112,6 +128,11 @@ export const useRegister = () => {
             }
         },
         onError: (error) => {
+            notifications.show({
+                title: 'Registration Failed',
+                message: error.message || 'Registration failed!',
+                color: 'red',
+            });
             console.error("Registration failed with error:", error);
         },
     });
@@ -133,7 +154,20 @@ export const useLogout = () => {
                 callbackUrl: "/",
                 redirect: true,
             });
+            notifications.show({
+                title: 'logout Successful',
+                message: 'You have logout!',
+                color: 'blue',
+            });
             console.log("User has been logged out");
         },
+        onError: () => {
+            notifications.show({
+                title: 'Logout Failed',
+                message: 'Logout failed!',
+                color: 'red',
+            });
+            console.error("Logout failed");
+        }
     });
 };
