@@ -1,5 +1,6 @@
 "use client";
 import React, { useRef } from "react";
+import { useRouter } from "next/navigation";
 import {
     Disclosure,
     DisclosureButton,
@@ -37,6 +38,12 @@ function classNames(...classes: any[]) {
 }
 
 export default function Nav() {
+
+    const router = useRouter(); // ใช้ useRouter ใน Client Component
+
+    const handleCartClick = () => {
+      router.push("/cart"); // นำทางไปยังหน้าตะกร้า
+    };
     return (
         <div className="min-h-full">
             <Disclosure as="nav" className="bg-white shadow">
@@ -70,6 +77,7 @@ export default function Nav() {
                             <div className="ml-4 flex items-center md:ml-6">
                                 <button
                                     type="button"
+                                    onClick={handleCartClick}
                                     className="relative rounded-full bg-[#067eee] p-1 text-gray-100 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#067eee]"
                                 >
                                     <span className="absolute -inset-1.5" />
