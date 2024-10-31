@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.0",
+    "@heroicons/react": "^2.1.5",
     "@mantine/core": "^7.13.4",
     "@mantine/dates": "^7.13.4",
     "@mantine/form": "^7.13.4",
@@ -21,6 +23,7 @@
     "@types/react-query": "^1.2.9",
     "axios": "^1.7.7",
     "dayjs": "^1.11.13",
+    "flowbite": "^2.5.2",
     "next": "15.0.1",
     "next-auth": "^4.24.10",
     "react": "^18.2.0",
