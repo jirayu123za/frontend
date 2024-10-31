@@ -355,7 +355,7 @@ export default function Example() {
       />
       <div className="p-4">
         <h3 className="text-lg font-semibold">{product.name}</h3>
-        <p className="text-gray-500">${product.price}</p>
+        <p className="text-gray-500">{product.price} Bath</p>
       </div>
     </Card>
 ))}
