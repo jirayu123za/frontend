@@ -1,60 +1,22 @@
-// "use client";
-// import React from 'react';
-// import { useSession } from 'next-auth/react';
-// import { Button, Flex } from '@mantine/core';
-// import { useLogout } from './hook/useAuth';
-// // import { useAuthStore } from './store/authStore';
-
-// export default function App() {
-//   const logoutMutation = useLogout();
-//   const { data: session } = useSession();
-//   // const { user } = useAuthStore();
-
-//   const handleLogout = () => {
-//     logoutMutation.mutate(undefined, {
-//       onSuccess: () => {
-//         console.log('Logout successful');
-//       },
-//       onError: (error) => {
-//         console.error('Logout failed', error);
-//       },
-//     });
-//     console.log('Logout button clicked');
-//   }
-
-//   return (
-//     <div>
-//       <Flex className='p-3'>
-//         <Button onClick={handleLogout}> logout </Button>
-//       </Flex>
-//       Test Current Date: {new Date().toLocaleDateString()}
-//       <pre>{JSON.stringify(session, null, 2)}</pre>
-//       {session ? (
-//         <>
-//           <p>Email: {session.user?.email}</p>
-//         </>
-//       ) : (
-//         <p>No session data available</p>
-//       )}
-//     </div>
-//   );
-// }
-
-
 "use client";
 import React, { useRef } from "react";
 import { Dialog } from "@headlessui/react";
 import { useState } from "react";
 import Nav from "./components/nav/Navbar";
 import { FooterCentered } from "../app/components/footer/FooterCentered";
+import { useProducts } from "./hook/useProducts";
 
 type Product = {
-  id: number;
+  product_id: string;
   name: string;
-  href: string;
-  price: string;
-  imageSrc: string;
-  imageAlt: string;
+  price: number;
+  image_url: string;
+  description: string;
+  quantity: number;
+  category: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
 };
 
 const products = [
@@ -227,7 +189,8 @@ function classNames(...classes: string[]) {
 export default function Example() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-
+  const { products, currentPage, setCurrentPage, totalPages } = useProducts();
+  
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
     setIsOpen(true);
