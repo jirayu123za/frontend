@@ -15,7 +15,7 @@ import {
     ShoppingBagIcon,
     XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { type } from "os";
+import { Divider } from "@mantine/core";
 
 const user = {
     name: "Tom Cook",
@@ -36,7 +36,7 @@ function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ");
 }
 
-function Nav() {
+export default function Nav() {
     return (
         <div className="min-h-full">
             <Disclosure as="nav" className="bg-white shadow">
@@ -186,15 +186,7 @@ function Nav() {
                     </div>
                 </DisclosurePanel>
             </Disclosure>
-
-
-            <main>
-                <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                    {/* Your content */}
-                </div>
-            </main>
+            <Divider className="shadow-md"/>
         </div>
     );
 }
-
-export default Nav;

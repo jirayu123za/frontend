@@ -43,31 +43,11 @@
 
 "use client";
 import React, { useRef } from "react";
-import {
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-} from "@headlessui/react";
-import {
-  Bars3Icon,
-  BellIcon,
-  XMarkIcon,
-  ShoppingBagIcon,
-} from "@heroicons/react/24/outline";
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  Radio,
-  RadioGroup,
-} from "@headlessui/react";
-import { StarIcon } from "@heroicons/react/20/solid";
-import { SetStateAction, useState } from "react";
+import { Dialog } from "@headlessui/react";
+import { useState } from "react";
 import Nav from "./components/nav/Navbar";
+import { FooterCentered } from "../app/components/footer/FooterCentered";
+
 type Product = {
   id: number;
   name: string;
@@ -76,6 +56,7 @@ type Product = {
   imageSrc: string;
   imageAlt: string;
 };
+
 const products = [
   {
     id: 1,
@@ -259,15 +240,12 @@ export default function Example() {
 
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html className="h-full bg-gray-100">
-        <body className="h-full">
-        ```
-      */}
       <Nav />
+      {/* <main>
+        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                   
+        </div>
+      </main> */}
       <div className="min-h-full">
         <header className="bg-white shadow"></header>
         <main>
@@ -373,6 +351,13 @@ export default function Example() {
           </div>
         </main>
       </div>
+      <FooterCentered/>
     </>
+    // <>
+    // {/* <Flex>
+    //  <HeaderSection /> 
+    // </Flex> */}
+
+    // </>
   );
 }
