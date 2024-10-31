@@ -219,18 +219,10 @@ export default function Example() {
     // ถ้ามี ref ให้ Scroll ไปยังตำแหน่งนั้น
     sectionRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-
-  function handleProductClick(product: {
-    id: number;
-    name: string;
-    href: string;
-    price: string;
-    imageSrc: string;
-    imageAlt: string;
-  }): void {
-    throw new Error("Function not implemented.");
-  }
-
+  const handleProductClick = (product: Product) => {
+    setSelectedProduct(product);
+    setIsOpen(true);
+  };
   return (
     <>
       <Nav />
