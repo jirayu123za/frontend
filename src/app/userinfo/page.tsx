@@ -1,15 +1,161 @@
 'use client';
-import React from "react";
+import React, { useRef, useState } from "react";
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import Nav from "../components/nav/Navbar";
 import { FooterCentered } from "../components/footer/FooterCentered";
-function page() {
+import { Avatar, Button, Container, Flex, Group, MultiSelect, Paper, Select, TextInput, Title, Text, Textarea, PasswordInput, Input } from "@mantine/core";
+import { useForm } from '@mantine/form';
+
+export function page() {
+  const form = useForm({
+    initialValues: {
+      first_name: '',
+      last_name: '',
+      user_name: '',
+      email: '',
+      password: '',
+      phone_no: '',
+      gender: '',
+      address: '',
+      profile_image: '',
+    },
+    validate: {
+
+    },
+  });
+
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleAvatarClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setProfileImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        setProfileImage(reader.result as string);
+        form.setFieldValue('profile_image', reader.result as string); // Store the base64 string in the form data
+      };
+    }
+  };
+
   return (
     <>
       <Nav />
-      <div className="min-h-full">
-        <main>
-          <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <Flex justify="center" pt={20} pb={20} style={{ minHeight: '85vh', paddingTop: '20px', paddingBottom: '20px' }}>
+        <Container size="lg">
+          <Paper shadow="lg" p="xl" radius="md" withBorder>
+            <form onSubmit={form.onSubmit((values) => console.log(values))}>
+              <Title size="h2" fw={700} mb="md">
+                Personal Information
+              </Title>
+              <Group align="center" pb="lg">
+                <Avatar
+                  size="xl"
+                  radius="xl"
+                  src={profileImage || undefined}
+                  onClick={handleAvatarClick}
+                  style={{ cursor: 'pointer' }}
+                />
+                <Text size="xl" fw={700} variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 90 }}>
+                  Hello, {form.values.first_name} {form.values.last_name}
+                </Text>
+                <Input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  onChange={handleFileChange}
+                />
+              </Group>
+              <Group grow mb="sm">
+                <TextInput
+                  placeholder="First Name"
+                  label="First Name"
+                  required
+                  {...form.getInputProps('first_name')}
+                />
+                <TextInput
+                  placeholder="Last Name"
+                  label="Last Name"
+                  required
+                  {...form.getInputProps('last_name')}
+                />
+              </Group>
+              <Group grow mb="sm">
+                <TextInput
+                  placeholder="Email"
+                  label="Email"
+                  type="email"
+                  required
+                  {...form.getInputProps('email')}
+                />
+              </Group>
+
+              <Group grow mb="sm">
+                <TextInput
+                  placeholder="Username"
+                  label="Username"
+                  required
+                  {...form.getInputProps('user_name')}
+                />
+               <PasswordInput
+                  placeholder="Password"
+                  label="Password"
+                  required
+                  {...form.getInputProps('password')}
+                />               
+              </Group>
+              <Group grow mb="sm">
+                <Select
+                  placeholder="Gender"
+                  label="Gender"
+                  searchable
+                  nothingFoundMessage="No options"
+                  data={['Male', 'Female', 'Other']}
+                  required
+                  {...form.getInputProps('gender')}
+                />
+                <TextInput
+                  placeholder="Phone Number"
+                  label="Phone Number"
+                  required
+                  {...form.getInputProps('phone_no')}
+                />
+              </Group>
+              <Textarea
+                placeholder="Address"
+                label="Address"
+                autosize
+                minRows={2}
+                maxRows={4}
+                required
+                {...form.getInputProps('address')}
+                mb="lg"
+              />
+              <Button type="submit" fullWidth color="blue" size="md">
+                Save Information
+              </Button>
+            </form>
+          </Paper>
+        </Container>
+      </Flex>
+      <FooterCentered />
+    </>
+  );
+}
+
+export default page;
+          {/* <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             <form>
               <div className="space-y-6">
                 <div className="border-b border-gray-900/10 pb-12">
@@ -165,14 +311,4 @@ function page() {
                 </button>
               </div>
             </form>
-          </div>
-        </main>
-        <FooterCentered />
-      </div>
-    </>
-    
-  );
-  
-}
-
-export default page;
+          </div> */}
