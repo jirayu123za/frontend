@@ -17,6 +17,7 @@ import {
     XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Divider } from "@mantine/core";
+import { useLogout } from '../../hook/useAuth';
 
 const user = {
     name: "Tom Cook",
@@ -38,12 +39,12 @@ function classNames(...classes: any[]) {
 }
 
 export default function Nav() {
-
-    const router = useRouter(); // ใช้ useRouter ใน Client Component
-
+    const router = useRouter();
     const handleCartClick = () => {
-      router.push("/cart"); // นำทางไปยังหน้าตะกร้า
+      router.push("/cart");
     };
+    const logoutMutation = useLogout();
+
     return (
         <div className="min-h-full">
             <Disclosure as="nav" className="bg-white shadow">
