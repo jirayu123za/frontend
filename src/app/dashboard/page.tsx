@@ -208,11 +208,6 @@ export default function Example() {
     setSelectedProduct(product);
     setIsOpen(true);
   };
-  const productsRef = useRef<HTMLHeadingElement>(null);
-
-  const handleAlbumClick = () => {
-    productsRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
 
   return (
     <>
@@ -263,11 +258,10 @@ export default function Example() {
             <hr className="mt-6"></hr>
             <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
               {products.map((product) => (
-                <a
+                <div
                   onClick={() => handleProductClick(product)}
                   key={product.id}
-                  href={product.href}
-                  className="group"
+                  className="group cursor-pointer"
                 >
                   <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7 mt-6">
                     <img
@@ -280,7 +274,7 @@ export default function Example() {
                   <p className="mt-1 text-lg font-medium text-gray-900">
                     {product.price}
                   </p>
-                </a>
+                </div>
               ))}
 
               {selectedProduct && (
