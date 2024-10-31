@@ -1,6 +1,6 @@
 import axios from 'axios';
 import useProductStore from '../store/productStore';
-import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 axios.defaults.baseURL = 'http://localhost:8000';
 
@@ -17,41 +17,19 @@ interface ProductData {
     deletedAt: string | null;
 }
 
-interface PaginatedResponse {
-    products: {
-        current_page: number;
-        data: ProductData[];
-        last_page: number;
-    };
-}
-
-
-const fetchProducts = async (page: number): Promise<PaginatedResponse> => {
-    const response = await axios.get(`api/products?page=${page}`);
-    return response.data;
+const fetchProducts = async (): Promise<ProductData[]> => {
+    try {
+        const response = await axios.get(`api/products`);
+        return response.data.products || [];
+    } catch (error) {
+        console.error('Failed to fetch products:', error);
+        return [];
+    }
 };
 
 export const useProducts = () => {
-    const { products, setProducts, currentPage, setCurrentPage, setTotalPages } = useProductStore();
-
-    const options = {
-        queryKey: ['products', currentPage],
-        queryFn: () => fetchProducts(currentPage),
-        keepPreviousData: true,
-        onSuccess: (data: PaginatedResponse) => {
-            console.log("Fetched data:", data);
-            setProducts(data.products.data);
-            setTotalPages(data.products.last_page);
-        },
-    } as UseQueryOptions<PaginatedResponse>;
-
-    const query: UseQueryResult<PaginatedResponse> = useQuery(options);
-
-    return {
-        ...query,
-        products,
-        currentPage,
-        setCurrentPage,
-        totalPages: useProductStore((state) => state.totalPages),
-    };
+    return useQuery<ProductData[]>({
+        queryKey: ['products'],
+        queryFn: fetchProducts,
+    });
 };

@@ -24,9 +24,10 @@ import {
 } from "@headlessui/react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { SetStateAction, useState } from "react";
-import { Button } from "@mantine/core";
+import { Button, Card } from "@mantine/core";
 import Nav from "./components/nav/Navbar";
 import { FooterCentered } from "../app/components/footer/FooterCentered";
+import { useProducts } from "./hook/useProducts";
 
 type Product = {
   imageSrc: string | undefined;
@@ -42,168 +43,169 @@ type Product = {
   updatedAt: string;
   deletedAt: string | null;
 };
-const products = [
-  {
-    id: 1,
-    name: "Earthen Bottle",
-    href: "#",
-    price: "$48",
-    imageSrc:
-      "https://i.pinimg.com/736x/62/92/44/629244440331e8b72abd8652c443c39c.jpg",
-    imageAlt:
-      "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-  },
-  {
-    id: 2,
-    name: "Nomad Tumbler",
-    href: "#",
-    price: "$35",
-    imageSrc:
-      "https://i.pinimg.com/564x/a0/89/72/a08972f11ad0daed9a74d7058c730c26.jpg",
-    imageAlt:
-      "Olive drab green insulated bottle with flared screw lid and flat top.",
-  },
-  {
-    id: 3,
-    name: "Focus Paper Refill",
-    href: "#",
-    price: "$89",
-    imageSrc:
-      "https://i.pinimg.com/564x/5f/a0/6b/5fa06b6bbc9266662c1cf84c458c83f1.jpg",
-    imageAlt:
-      "Person using a pen to cross a task off a productivity paper card.",
-  },
-  {
-    id: 4,
-    name: "Machined Mechanical Pencil",
-    href: "#",
-    price: "$35",
-    imageSrc:
-      "https://i.pinimg.com/736x/da/83/4b/da834b8dff9f73eb4eaeed3ecad39d57.jpg",
-    imageAlt:
-      "Hand holding black machined steel mechanical pencil with brass tip and top.",
-  },
-  {
-    id: 5,
-    name: "Earthen Bottle",
-    href: "#",
-    price: "$48",
-    imageSrc:
-      "https://t2.genius.com/unsafe/900x0/https%3A%2F%2Fimages.genius.com%2F77b0d1b460d9ba4d1388aad0722a8188.1000x1000x1.png",
-    imageAlt:
-      "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-  },
-  {
-    id: 6,
-    name: "Earthen Bottle",
-    href: "#",
-    price: "$48",
-    imageSrc:
-      "https://static.qobuz.com/images/covers/ca/xu/yacrh5ul5xuca_600.jpg",
-    imageAlt:
-      "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-  },
-  {
-    id: 7,
-    name: "Earthen Bottle",
-    href: "#",
-    price: "$48",
-    imageSrc:
-      "https://i.pinimg.com/564x/9d/d4/ed/9dd4ed60606cb198770feb1229b9ee57.jpg",
-    imageAlt:
-      "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-  },
-  {
-    id: 8,
-    name: "Earthen Bottle",
-    href: "#",
-    price: "$48",
-    imageSrc:
-      "https://i.pinimg.com/564x/25/ea/27/25ea271daa74cd3ecb500d6fbe3b5897.jpg",
-    imageAlt:
-      "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-  },
-  {
-    id: 9,
-    name: "Earthen Bottle",
-    href: "#",
-    price: "$48",
-    imageSrc:
-      "https://i.pinimg.com/736x/16/4a/71/164a71b9abc5ecf891a4ed8ade62f4c3.jpg",
-    imageAlt:
-      "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-  },
-  {
-    id: 10,
-    name: "Nomad Tumbler",
-    href: "#",
-    price: "$35",
-    imageSrc:
-      "https://i.pinimg.com/564x/ee/75/8b/ee758bb793bfb14098a4ae7f60a11d07.jpg",
-    imageAlt:
-      "Olive drab green insulated bottle with flared screw lid and flat top.",
-  },
-  {
-    id: 11,
-    name: "Focus Paper Refill",
-    href: "#",
-    price: "$89",
-    imageSrc:
-      "https://i.pinimg.com/564x/76/cd/ef/76cdef3586a31ce080324b03d40c6159.jpg",
-    imageAlt:
-      "Person using a pen to cross a task off a productivity paper card.",
-  },
-  {
-    id: 12,
-    name: "Machined Mechanical Pencil",
-    href: "#",
-    price: "$35",
-    imageSrc:
-      "https://i.pinimg.com/736x/f9/da/45/f9da4531ae526610eddd055194f5d642.jpg",
-    imageAlt:
-      "Hand holding black machined steel mechanical pencil with brass tip and top.",
-  },
-  {
-    id: 13,
-    name: "Earthen Bottle",
-    href: "#",
-    price: "$48",
-    imageSrc:
-      "https://i.pinimg.com/564x/c1/2f/a7/c12fa7ab4b3d04e6b53d9916a8e5fee6.jpg",
-    imageAlt:
-      "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-  },
-  {
-    id: 14,
-    name: "Earthen Bottle",
-    href: "#",
-    price: "$48",
-    imageSrc:
-      "https://i.pinimg.com/564x/d9/cc/cd/d9cccd8d61743c2d1d83b2a9d3cf247a.jpg",
-    imageAlt:
-      "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-  },
-  {
-    id: 15,
-    name: "Earthen Bottle",
-    href: "#",
-    price: "$48",
-    imageSrc:
-      "https://i.pinimg.com/564x/a5/d3/f1/a5d3f1c6d1b9da19863b6bee55bfde21.jpg",
-    imageAlt:
-      "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-  },
-  {
-    id: 16,
-    name: "Earthen Bottle",
-    href: "#",
-    price: "$48",
-    imageSrc:
-      "https://i.pinimg.com/736x/bf/e3/90/bfe39002a162cbc03d67ecea58f0b3cf.jpg",
-    imageAlt:
-      "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-  },
-];
+
+// const products = [
+//   {
+//     id: 1,
+//     name: "Earthen Bottle",
+//     href: "#",
+//     price: "$48",
+//     imageSrc:
+//       "https://i.pinimg.com/736x/62/92/44/629244440331e8b72abd8652c443c39c.jpg",
+//     imageAlt:
+//       "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
+//   },
+//   {
+//     id: 2,
+//     name: "Nomad Tumbler",
+//     href: "#",
+//     price: "$35",
+//     imageSrc:
+//       "https://i.pinimg.com/564x/a0/89/72/a08972f11ad0daed9a74d7058c730c26.jpg",
+//     imageAlt:
+//       "Olive drab green insulated bottle with flared screw lid and flat top.",
+//   },
+//   {
+//     id: 3,
+//     name: "Focus Paper Refill",
+//     href: "#",
+//     price: "$89",
+//     imageSrc:
+//       "https://i.pinimg.com/564x/5f/a0/6b/5fa06b6bbc9266662c1cf84c458c83f1.jpg",
+//     imageAlt:
+//       "Person using a pen to cross a task off a productivity paper card.",
+//   },
+//   {
+//     id: 4,
+//     name: "Machined Mechanical Pencil",
+//     href: "#",
+//     price: "$35",
+//     imageSrc:
+//       "https://i.pinimg.com/736x/da/83/4b/da834b8dff9f73eb4eaeed3ecad39d57.jpg",
+//     imageAlt:
+//       "Hand holding black machined steel mechanical pencil with brass tip and top.",
+//   },
+//   {
+//     id: 5,
+//     name: "Earthen Bottle",
+//     href: "#",
+//     price: "$48",
+//     imageSrc:
+//       "https://t2.genius.com/unsafe/900x0/https%3A%2F%2Fimages.genius.com%2F77b0d1b460d9ba4d1388aad0722a8188.1000x1000x1.png",
+//     imageAlt:
+//       "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
+//   },
+//   {
+//     id: 6,
+//     name: "Earthen Bottle",
+//     href: "#",
+//     price: "$48",
+//     imageSrc:
+//       "https://static.qobuz.com/images/covers/ca/xu/yacrh5ul5xuca_600.jpg",
+//     imageAlt:
+//       "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
+//   },
+//   {
+//     id: 7,
+//     name: "Earthen Bottle",
+//     href: "#",
+//     price: "$48",
+//     imageSrc:
+//       "https://i.pinimg.com/564x/9d/d4/ed/9dd4ed60606cb198770feb1229b9ee57.jpg",
+//     imageAlt:
+//       "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
+//   },
+//   {
+//     id: 8,
+//     name: "Earthen Bottle",
+//     href: "#",
+//     price: "$48",
+//     imageSrc:
+//       "https://i.pinimg.com/564x/25/ea/27/25ea271daa74cd3ecb500d6fbe3b5897.jpg",
+//     imageAlt:
+//       "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
+//   },
+//   {
+//     id: 9,
+//     name: "Earthen Bottle",
+//     href: "#",
+//     price: "$48",
+//     imageSrc:
+//       "https://i.pinimg.com/736x/16/4a/71/164a71b9abc5ecf891a4ed8ade62f4c3.jpg",
+//     imageAlt:
+//       "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
+//   },
+//   {
+//     id: 10,
+//     name: "Nomad Tumbler",
+//     href: "#",
+//     price: "$35",
+//     imageSrc:
+//       "https://i.pinimg.com/564x/ee/75/8b/ee758bb793bfb14098a4ae7f60a11d07.jpg",
+//     imageAlt:
+//       "Olive drab green insulated bottle with flared screw lid and flat top.",
+//   },
+//   {
+//     id: 11,
+//     name: "Focus Paper Refill",
+//     href: "#",
+//     price: "$89",
+//     imageSrc:
+//       "https://i.pinimg.com/564x/76/cd/ef/76cdef3586a31ce080324b03d40c6159.jpg",
+//     imageAlt:
+//       "Person using a pen to cross a task off a productivity paper card.",
+//   },
+//   {
+//     id: 12,
+//     name: "Machined Mechanical Pencil",
+//     href: "#",
+//     price: "$35",
+//     imageSrc:
+//       "https://i.pinimg.com/736x/f9/da/45/f9da4531ae526610eddd055194f5d642.jpg",
+//     imageAlt:
+//       "Hand holding black machined steel mechanical pencil with brass tip and top.",
+//   },
+//   {
+//     id: 13,
+//     name: "Earthen Bottle",
+//     href: "#",
+//     price: "$48",
+//     imageSrc:
+//       "https://i.pinimg.com/564x/c1/2f/a7/c12fa7ab4b3d04e6b53d9916a8e5fee6.jpg",
+//     imageAlt:
+//       "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
+//   },
+//   {
+//     id: 14,
+//     name: "Earthen Bottle",
+//     href: "#",
+//     price: "$48",
+//     imageSrc:
+//       "https://i.pinimg.com/564x/d9/cc/cd/d9cccd8d61743c2d1d83b2a9d3cf247a.jpg",
+//     imageAlt:
+//       "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
+//   },
+//   {
+//     id: 15,
+//     name: "Earthen Bottle",
+//     href: "#",
+//     price: "$48",
+//     imageSrc:
+//       "https://i.pinimg.com/564x/a5/d3/f1/a5d3f1c6d1b9da19863b6bee55bfde21.jpg",
+//     imageAlt:
+//       "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
+//   },
+//   {
+//     id: 16,
+//     name: "Earthen Bottle",
+//     href: "#",
+//     price: "$48",
+//     imageSrc:
+//       "https://i.pinimg.com/736x/bf/e3/90/bfe39002a162cbc03d67ecea58f0b3cf.jpg",
+//     imageAlt:
+//       "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
+//   },
+// ];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -212,17 +214,21 @@ function classNames(...classes: string[]) {
 export default function Example() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-
+  const { data: products = [], isLoading, error } = useProducts();
   const sectionRef = useRef<HTMLDivElement>(null);
 
   const handleScroll = () => {
-    // ถ้ามี ref ให้ Scroll ไปยังตำแหน่งนั้น
     sectionRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
     setIsOpen(true);
   };
+
+  console.log("Products", products);
+  
+  
   return (
     <>
       <Nav />
@@ -272,7 +278,7 @@ export default function Example() {
             </h1>
             <hr className="mt-6"></hr>
             <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-              {products.map((product) => (
+              {/* {products.map((product) => (
                 <div
                   onClick={() => handleProductClick(product)}
                   key={product.id}
@@ -334,8 +340,27 @@ export default function Example() {
                     </Dialog.Panel>
                   </div>
                 </Dialog>
-              )}
+              )} */}
+{Array.isArray(products) && products.map((product) => (
+    <Card
+      key={product.product_id}
+      shadow="xs"
+      className="cursor-pointer"
+      // onClick={() => handleProductClick(product)}
+    >
+      <img
+        src={product.image_url}
+        alt={product.name}
+        className="w-full h-48 object-cover"
+      />
+      <div className="p-4">
+        <h3 className="text-lg font-semibold">{product.name}</h3>
+        <p className="text-gray-500">${product.price}</p>
+      </div>
+    </Card>
+))}
             </div>
+            
           </div>
         </main>
       </div>
