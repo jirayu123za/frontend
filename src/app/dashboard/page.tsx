@@ -25,6 +25,7 @@ import {
 import { StarIcon } from "@heroicons/react/20/solid";
 import { SetStateAction, useState } from "react";
 import Nav from "../navbar/page";
+import { Button } from "@mantine/core";
 type Product = {
   id: number;
   name: string;
@@ -203,6 +204,12 @@ function classNames(...classes: string[]) {
 export default function Example() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    // ถ้ามี ref ให้ Scroll ไปยังตำแหน่งนั้น
+    sectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
@@ -220,8 +227,16 @@ export default function Example() {
         ```
       */}
       <Nav />
+
       <div className="min-h-full">
-        <header className="bg-white shadow"></header>
+        <header className="bg-white shadow">
+          <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+            <h1 className="text-3xl font-bold tracking-tight text-gray-700">
+              Dashboard
+            </h1>
+          </div>
+        </header>
+        <hr></hr>
         <main>
           <div className="relative isolate overflow-hidden bg-white px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0">
             <div className="absolute inset-0 -z-10 overflow-hidden"></div>
@@ -240,6 +255,13 @@ export default function Example() {
                       allows music fans to easily choose and purchase their
                       favorite albums, along with reviews from real users.
                     </p>
+                    <button
+                      type="button"
+                      onClick={handleScroll}
+                      className="mt-7 px-6 py-3.5 text-base font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    >
+                      SHOPPING NOW
+                    </button>
                   </div>
                 </div>
               </div>
@@ -254,7 +276,9 @@ export default function Example() {
           </div>
           <div className="mt-14"></div>
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <h1 className="text-xl/8 text-gray-700">Products</h1>
+            <h1 ref={sectionRef} className="text-xl/8 text-gray-700">
+              Products
+            </h1>
             <hr className="mt-6"></hr>
             <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
               {products.map((product) => (
