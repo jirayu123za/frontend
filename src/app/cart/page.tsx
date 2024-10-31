@@ -4,6 +4,7 @@ import { Button, Input, Divider } from '@mantine/core';
 import Nav from '../components/nav/Navbar'; // นำเข้า Nav component
 import { useCart } from '../hook/useCart';
 import { useFetchCartItems } from '../../app/hook/useFetchCartItems';
+import { FooterCentered } from '../components/footer/FooterCentered';
 
 const CartPage = () => {
   const { items, updateQuantity, removeItem, total } = useCart();
@@ -100,6 +101,8 @@ const CartPage = () => {
           </Button>
         </div>
       </div>
+      
+      <FooterCentered />
     </div>
   );
 };
