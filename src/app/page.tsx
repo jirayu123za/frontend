@@ -26,13 +26,19 @@ import { StarIcon } from "@heroicons/react/20/solid";
 import { SetStateAction, useState } from "react";
 import { Button } from "@mantine/core";
 import Nav from "./components/nav/Navbar";
+import { FooterCentered } from "../app/components/footer/FooterCentered";
+
 type Product = {
-  id: number;
+  product_id: string;
   name: string;
-  href: string;
-  price: string;
-  imageSrc: string;
-  imageAlt: string;
+  price: number;
+  image_url: string;
+  description: string;
+  quantity: number;
+  category: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
 };
 const products = [
   {
@@ -204,12 +210,6 @@ function classNames(...classes: string[]) {
 export default function Example() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  const handleScroll = () => {
-    // ถ้ามี ref ให้ Scroll ไปยังตำแหน่งนั้น
-    sectionRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
 
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
