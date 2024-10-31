@@ -1,53 +1,31 @@
-// "use client";
-// import React from 'react';
-// import { useSession } from 'next-auth/react';
-// import { Button, Flex } from '@mantine/core';
-// import { useLogout } from './hook/useAuth';
-// // import { useAuthStore } from './store/authStore';
-
-// export default function App() {
-//   const logoutMutation = useLogout();
-//   const { data: session } = useSession();
-//   // const { user } = useAuthStore();
-
-//   const handleLogout = () => {
-//     logoutMutation.mutate(undefined, {
-//       onSuccess: () => {
-//         console.log('Logout successful');
-//       },
-//       onError: (error) => {
-//         console.error('Logout failed', error);
-//       },
-//     });
-//     console.log('Logout button clicked');
-//   }
-
-//   return (
-//     <div>
-//       <Flex className='p-3'>
-//         <Button onClick={handleLogout}> logout </Button>
-//       </Flex>
-//       Test Current Date: {new Date().toLocaleDateString()}
-//       <pre>{JSON.stringify(session, null, 2)}</pre>
-//       {session ? (
-//         <>
-//           <p>Email: {session.user?.email}</p>
-//         </>
-//       ) : (
-//         <p>No session data available</p>
-//       )}
-//     </div>
-//   );
-// }
-
-
 "use client";
 import React, { useRef } from "react";
-import { Dialog } from "@headlessui/react";
-import { useState } from "react";
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+} from "@headlessui/react";
+import {
+  Bars3Icon,
+  BellIcon,
+  XMarkIcon,
+  ShoppingBagIcon,
+} from "@heroicons/react/24/outline";
+import {
+  Dialog,
+  DialogBackdrop,
+  DialogPanel,
+  Radio,
+  RadioGroup,
+} from "@headlessui/react";
+import { StarIcon } from "@heroicons/react/20/solid";
+import { SetStateAction, useState } from "react";
+import { Button } from "@mantine/core";
 import Nav from "./components/nav/Navbar";
-import { FooterCentered } from "../app/components/footer/FooterCentered";
-
 type Product = {
   id: number;
   name: string;
@@ -56,7 +34,6 @@ type Product = {
   imageSrc: string;
   imageAlt: string;
 };
-
 const products = [
   {
     id: 1,
@@ -144,7 +121,7 @@ const products = [
     href: "#",
     price: "$48",
     imageSrc:
-      "https://i.pinimg.com/736x/62/92/44/629244440331e8b72abd8652c443c39c.jpg",
+      "https://i.pinimg.com/736x/16/4a/71/164a71b9abc5ecf891a4ed8ade62f4c3.jpg",
     imageAlt:
       "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
   },
@@ -154,7 +131,7 @@ const products = [
     href: "#",
     price: "$35",
     imageSrc:
-      "https://i.pinimg.com/564x/a0/89/72/a08972f11ad0daed9a74d7058c730c26.jpg",
+      "https://i.pinimg.com/564x/ee/75/8b/ee758bb793bfb14098a4ae7f60a11d07.jpg",
     imageAlt:
       "Olive drab green insulated bottle with flared screw lid and flat top.",
   },
@@ -164,7 +141,7 @@ const products = [
     href: "#",
     price: "$89",
     imageSrc:
-      "https://i.pinimg.com/564x/5f/a0/6b/5fa06b6bbc9266662c1cf84c458c83f1.jpg",
+      "https://i.pinimg.com/564x/76/cd/ef/76cdef3586a31ce080324b03d40c6159.jpg",
     imageAlt:
       "Person using a pen to cross a task off a productivity paper card.",
   },
@@ -174,7 +151,7 @@ const products = [
     href: "#",
     price: "$35",
     imageSrc:
-      "https://i.pinimg.com/736x/da/83/4b/da834b8dff9f73eb4eaeed3ecad39d57.jpg",
+      "https://i.pinimg.com/736x/f9/da/45/f9da4531ae526610eddd055194f5d642.jpg",
     imageAlt:
       "Hand holding black machined steel mechanical pencil with brass tip and top.",
   },
@@ -184,7 +161,7 @@ const products = [
     href: "#",
     price: "$48",
     imageSrc:
-      "https://t2.genius.com/unsafe/900x0/https%3A%2F%2Fimages.genius.com%2F77b0d1b460d9ba4d1388aad0722a8188.1000x1000x1.png",
+      "https://i.pinimg.com/564x/c1/2f/a7/c12fa7ab4b3d04e6b53d9916a8e5fee6.jpg",
     imageAlt:
       "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
   },
@@ -194,7 +171,7 @@ const products = [
     href: "#",
     price: "$48",
     imageSrc:
-      "https://static.qobuz.com/images/covers/ca/xu/yacrh5ul5xuca_600.jpg",
+      "https://i.pinimg.com/564x/d9/cc/cd/d9cccd8d61743c2d1d83b2a9d3cf247a.jpg",
     imageAlt:
       "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
   },
@@ -204,7 +181,7 @@ const products = [
     href: "#",
     price: "$48",
     imageSrc:
-      "https://i.pinimg.com/564x/9d/d4/ed/9dd4ed60606cb198770feb1229b9ee57.jpg",
+      "https://i.pinimg.com/564x/a5/d3/f1/a5d3f1c6d1b9da19863b6bee55bfde21.jpg",
     imageAlt:
       "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
   },
@@ -214,7 +191,7 @@ const products = [
     href: "#",
     price: "$48",
     imageSrc:
-      "https://i.pinimg.com/564x/25/ea/27/25ea271daa74cd3ecb500d6fbe3b5897.jpg",
+      "https://i.pinimg.com/736x/bf/e3/90/bfe39002a162cbc03d67ecea58f0b3cf.jpg",
     imageAlt:
       "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
   },
@@ -227,27 +204,39 @@ function classNames(...classes: string[]) {
 export default function Example() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    // ถ้ามี ref ให้ Scroll ไปยังตำแหน่งนั้น
+    sectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
     setIsOpen(true);
   };
-  const productsRef = useRef<HTMLHeadingElement>(null);
-
-  const handleAlbumClick = () => {
-    productsRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
 
   return (
     <>
+      {/*
+        This example requires updating your template:
+
+        ```
+        <html className="h-full bg-gray-100">
+        <body className="h-full">
+        ```
+      */}
       <Nav />
-      {/* <main>
-        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                   
-        </div>
-      </main> */}
+
       <div className="min-h-full">
-        <header className="bg-white shadow"></header>
+        <header className="bg-white shadow">
+          <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+            <h1 className="text-3xl font-bold tracking-tight text-gray-700">
+              Dashboard
+            </h1>
+          </div>
+        </header>
+        <hr></hr>
         <main>
           <div className="relative isolate overflow-hidden bg-white px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0">
             <div className="absolute inset-0 -z-10 overflow-hidden"></div>
@@ -255,7 +244,7 @@ export default function Example() {
               <div className="lg:col-span-2 lg:col-start-1 lg:row-start-1 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
                 <div className="lg:pr-4">
                   <div className="lg:max-w-lg">
-                    <h1 className="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl  mt-20 text-gray-700 ">
+                    <h1 className="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white mt-20 text-gray-700 ">
                       Album Sphere
                     </h1>
 
@@ -266,12 +255,19 @@ export default function Example() {
                       allows music fans to easily choose and purchase their
                       favorite albums, along with reviews from real users.
                     </p>
+                    <button
+                      type="button"
+                      onClick={handleScroll}
+                      className="mt-7 px-6 py-3.5 text-base font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    >
+                      SHOPPING NOW
+                    </button>
                   </div>
                 </div>
               </div>
               <div className="-ml-12 -mt-12 p-12 lg:sticky lg:top-4 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:overflow-hidden">
                 <img
-                  className="w-[30rem] max-w-none rounded-xl bg-gray-900 shadow-xl ring-1 ring-gray-400/10 sm:w-[38rem]"
+                  className="w-[48rem] max-w-none rounded-xl bg-gray-900 shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem]"
                   src="album.jpg"
                   alt=""
                 />
@@ -280,15 +276,16 @@ export default function Example() {
           </div>
           <div className="mt-14"></div>
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <h1 className="text-xl/8 text-gray-700">Products</h1>
+            <h1 ref={sectionRef} className="text-xl/8 text-gray-700">
+              Products
+            </h1>
             <hr className="mt-6"></hr>
             <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
               {products.map((product) => (
-                <a
+                <div
                   onClick={() => handleProductClick(product)}
                   key={product.id}
-                  href={product.href}
-                  className="group"
+                  className="group cursor-pointer"
                 >
                   <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7 mt-6">
                     <img
@@ -301,7 +298,7 @@ export default function Example() {
                   <p className="mt-1 text-lg font-medium text-gray-900">
                     {product.price}
                   </p>
-                </a>
+                </div>
               ))}
 
               {selectedProduct && (
@@ -351,13 +348,6 @@ export default function Example() {
           </div>
         </main>
       </div>
-      <FooterCentered/>
     </>
-    // <>
-    // {/* <Flex>
-    //  <HeaderSection /> 
-    // </Flex> */}
-
-    // </>
   );
 }
