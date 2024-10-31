@@ -4,14 +4,14 @@ import { useCartStore } from '../store/cartStore';
 import { useMemo } from 'react';
 
 export const useCart = () => {
-  const items = useCartStore((state) => state.items);
+  const items = useCartStore((state) => state.items || []); // ใช้ค่าเริ่มต้นเป็นอาร์เรย์ว่าง
   const addItem = useCartStore((state) => state.addItem);
   const removeItem = useCartStore((state) => state.removeItem);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
 
   // คำนวณผลรวมตาม Unit_price และ Quantity
   const total = useMemo(() => {
-    return items.reduce((acc, item) => acc + item.Unit_price * item.Quantity, 0);
+    return items.reduce((acc, item) => acc + (item?.Unit_price || 0) * (item?.Quantity || 0), 0);
   }, [items]);
 
   return {
