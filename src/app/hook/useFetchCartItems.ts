@@ -1,7 +1,7 @@
 // src/hooks/useFetchCartItems.ts
 "use client";
 import { useQuery } from '@tanstack/react-query';
-import { CartItem } from '../store/cartstore';
+import { CartItem } from '../store/cartStore';
 
 const fetchCartItems = async (): Promise<CartItem[]> => {
   const response = await fetch('http://localhost:3001/cartItems');

@@ -1,6 +1,6 @@
 // src/hooks/useCart.ts
 "use client";
-import { useCartStore } from '../../app/store/cartstore';
+import { useCartStore } from '../store/cartStore';
 import { useMemo } from 'react';
 
 export const useCart = () => {
