@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from "react";
+import React from "react";
 import {
   Disclosure,
   DisclosureButton,
@@ -15,7 +15,9 @@ import {
   ShoppingBagIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { type } from "os";
+import { Divider } from "@mantine/core";
+import { useLogout } from "../../hook/useAuth";
+import Link from "next/link";
 
 const user = {
   name: "Tom Cook",
@@ -23,7 +25,9 @@ const user = {
   imageUrl:
     "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 };
+
 const navigation = [{ name: "Dashboard", href: "/", current: true }];
+
 const userNavigation = [
   { name: "Your Profile", href: "/userinfo" },
   { name: "Sign out", href: "#" },
@@ -33,7 +37,9 @@ function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-function Nav() {
+export default function Nav() {
+  const logoutMutation = useLogout();
+
   return (
     <div className="min-h-full">
       <Disclosure as="nav" className="bg-white shadow">
@@ -65,14 +71,16 @@ function Nav() {
             </div>
             <div className="hidden md:block">
               <div className="ml-4 flex items-center md:ml-6">
-                <button
-                  type="button"
-                  className="relative rounded-full bg-[#067eee] p-1 text-gray-100 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#067eee]"
-                >
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">View notifications</span>
-                  <ShoppingBagIcon aria-hidden="true" className="h-7 w-7" />
-                </button>
+                <Link href="/cart">
+                  <button
+                    type="button"
+                    className="relative rounded-full bg-[#067eee] p-1 text-gray-100 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#067eee]"
+                  >
+                    <span className="absolute -inset-1.5" />
+                    <span className="sr-only">View notifications</span>
+                    <ShoppingBagIcon aria-hidden="true" className="h-7 w-7" />
+                  </button>
+                </Link>
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
@@ -183,8 +191,7 @@ function Nav() {
           </div>
         </DisclosurePanel>
       </Disclosure>
+      <Divider />
     </div>
   );
 }
-
-export default Nav;

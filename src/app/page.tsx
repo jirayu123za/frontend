@@ -225,25 +225,9 @@ export default function Example() {
   };
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html className="h-full bg-gray-100">
-        <body className="h-full">
-        ```
-      */}
       <Nav />
 
       <div className="min-h-full">
-        <header className="bg-white shadow">
-          <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-700">
-              Dashboard
-            </h1>
-          </div>
-        </header>
-        <hr></hr>
         <main>
           <div className="relative isolate overflow-hidden bg-white px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0">
             <div className="absolute inset-0 -z-10 overflow-hidden"></div>
@@ -355,6 +339,7 @@ export default function Example() {
           </div>
         </main>
       </div>
+      <FooterCentered />
     </>
   );
 }
