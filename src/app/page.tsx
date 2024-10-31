@@ -29,6 +29,8 @@ import Nav from "./components/nav/Navbar";
 import { FooterCentered } from "../app/components/footer/FooterCentered";
 
 type Product = {
+  imageSrc: string | undefined;
+  imageAlt: string | undefined;
   product_id: string;
   name: string;
   price: number;
@@ -211,10 +213,23 @@ export default function Example() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  const handleProductClick = (product: Product) => {
-    setSelectedProduct(product);
-    setIsOpen(true);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    // ถ้ามี ref ให้ Scroll ไปยังตำแหน่งนั้น
+    sectionRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  function handleProductClick(product: {
+    id: number;
+    name: string;
+    href: string;
+    price: string;
+    imageSrc: string;
+    imageAlt: string;
+  }): void {
+    throw new Error("Function not implemented.");
+  }
 
   return (
     <>
