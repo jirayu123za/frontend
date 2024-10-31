@@ -10,7 +10,7 @@ export interface CustomSession {
 }
 
 export interface CustomUser {
-    id?: string | null;
+    user_id?: string | null;
     first_name?: string | null;
     last_name?: string | null;
     email?: string | null;
