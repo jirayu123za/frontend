@@ -1,12 +1,34 @@
 'use client';
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import Nav from "../components/nav/Navbar";
 import { FooterCentered } from "../components/footer/FooterCentered";
-import { Avatar, Button, Container, Flex, Group, MultiSelect, Paper, Select, TextInput, Title, Text, Textarea, PasswordInput, Input } from "@mantine/core";
+import { Avatar, Button, Container, Flex, Group, Paper, Select, TextInput, Title, Text, Textarea, PasswordInput, Input, LoadingOverlay } from "@mantine/core";
 import { useForm } from '@mantine/form';
+import { useSession } from "next-auth/react";
+
+interface CustomUser {
+  first_name?: string | null;
+  last_name?: string | null;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+  user_name?: string | null;
+  phone_no?: number | null;
+  gender?: string | null;
+  address?: string | null;
+}
+
+declare module "next-auth" {
+  interface Session {
+    user?: CustomUser;
+  }
+}
 
 export function page() {
+  const { data: session, status } = useSession();
+  const loading = status === "loading";
+
   const form = useForm({
     initialValues: {
       first_name: '',
@@ -24,29 +46,48 @@ export function page() {
     },
   });
 
-  const [profileImage, setProfileImage] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleAvatarClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
+  useEffect(() => {
+    if (session) {
+      form.setValues({
+        first_name: session.user?.first_name || '',
+        last_name: session.user?.last_name || '',
+        email: session.user?.email || '',
+        user_name: session.user?.user_name || '',
+        phone_no: session.user?.phone_no?.toString() || '',
+        gender: session.user?.gender || '',
+        address: session.user?.address || '',
+      });
     }
-  };
+    console.log("The session is", session);
+  }, [session]);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setProfileImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        setProfileImage(reader.result as string);
-        form.setFieldValue('profile_image', reader.result as string); // Store the base64 string in the form data
-      };
-    }
-  };
+  if (loading) {
+    return <LoadingOverlay visible />;
+  }
+  
+  // const [profileImage, setProfileImage] = useState<string | null>(null);
+  // const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // const handleAvatarClick = () => {
+  //   if (fileInputRef.current) {
+  //     fileInputRef.current.click();
+  //   }
+  // };
+
+  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onload = () => {
+  //       setProfileImage(reader.result as string);
+  //     };
+  //     reader.readAsDataURL(file);
+  //     reader.onload = () => {
+  //       setProfileImage(reader.result as string);
+  //       form.setFieldValue('profile_image', reader.result as string);
+  //     };
+  //   }
+  // };
 
   return (
     <>
@@ -62,20 +103,20 @@ export function page() {
                 <Avatar
                   size="xl"
                   radius="xl"
-                  src={profileImage || undefined}
-                  onClick={handleAvatarClick}
+                  // src={profileImage || undefined}
+                  // onClick={handleAvatarClick}
                   style={{ cursor: 'pointer' }}
                 />
                 <Text size="xl" fw={700} variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 90 }}>
                   Hello, {form.values.first_name} {form.values.last_name}
                 </Text>
-                <Input
+                {/* <Input
                   ref={fileInputRef}
                   type="file"
                   accept="image/*"
                   style={{ display: 'none' }}
                   onChange={handleFileChange}
-                />
+                /> */}
               </Group>
               <Group grow mb="sm">
                 <TextInput
