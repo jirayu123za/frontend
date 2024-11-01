@@ -4,8 +4,14 @@ import Nav from '../components/nav/Navbar';
 import { useCart } from '../hook/useCart';
 import { useFetchCartItems } from '../../app/hook/useFetchCartItems';
 import { FooterCentered } from '../components/footer/FooterCentered';
+import { useSession } from "next-auth/react";
+import { CustomSession } from "../hook/useAuth";
 
 const CartPage = () => {
+  const { data: session } = useSession();
+  const customSession = session as CustomSession | null;
+  const token = customSession?.user?.token ?? '';
+
   const { items, updateQuantity, removeItem, total } = useCart();
   const { data: cartItems, isLoading, isError } = useFetchCartItems();
 
