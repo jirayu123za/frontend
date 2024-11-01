@@ -6,6 +6,7 @@ import { FooterCentered } from "../components/footer/FooterCentered";
 import { Avatar, Button, Container, Flex, Group, Paper, Select, TextInput, Title, Text, Textarea, PasswordInput, Input, LoadingOverlay } from "@mantine/core";
 import { useForm } from '@mantine/form';
 import { useSession } from "next-auth/react";
+import { useSubmitUserInformation } from '../hook/useUserinfo';
 
 interface CustomUser {
   first_name?: string | null;
@@ -28,6 +29,7 @@ declare module "next-auth" {
 export function page() {
   const { data: session, status } = useSession();
   const loading = status === "loading";
+  const mutation = useSubmitUserInformation();
 
   const form = useForm({
     initialValues: {
@@ -65,6 +67,19 @@ export function page() {
     return <LoadingOverlay visible />;
   }
   
+    const handleSubmit = (values: typeof form.values) => {
+        const formData = new FormData();
+        formData.append('first_name', values.first_name);
+        formData.append('last_name', values.last_name);
+        formData.append('email', values.email);
+        formData.append('user_name', values.user_name);
+        formData.append('password', values.password);
+        formData.append('phone_no', values.phone_no);
+        formData.append('gender', values.gender);
+
+        mutation.mutate(formData);
+    };
+
   // const [profileImage, setProfileImage] = useState<string | null>(null);
   // const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -95,7 +110,7 @@ export function page() {
       <Flex justify="center" pt={20} pb={20} style={{ minHeight: '85vh', paddingTop: '20px', paddingBottom: '20px' }}>
         <Container size="lg">
           <Paper shadow="lg" p="xl" radius="md" withBorder>
-            <form onSubmit={form.onSubmit((values) => console.log(values))}>
+            <form onSubmit={form.onSubmit((values) => { console.log(values); handleSubmit(values); })}>
               <Title size="h2" fw={700} mb="md">
                 Personal Information
               </Title>
