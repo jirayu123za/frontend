@@ -1,3 +1,4 @@
+import { notifications } from '@mantine/notifications';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -20,9 +21,19 @@ export const useSubmitUserInformation = () => {
     return useMutation({
         mutationFn: submitUserInformation,
         onSuccess: () => {
+            notifications.show({
+                title: 'Update user information',
+                message: 'Update user information successfully!',
+                color: 'green',
+            });
             console.log("User information updated successfully");
         },
         onError: (error: any) => {
+            notifications.show({
+                title: 'Update user information',
+                message: 'Update user information failed!',
+                color: 'red',
+            });
             console.error("Error submitting user information:", error);
         },
     });

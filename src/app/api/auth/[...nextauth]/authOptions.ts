@@ -16,6 +16,10 @@ export interface CustomUser {
     email?: string | null;
     profile_image?: string | null;
     token?: string | null;
+    image?: string | null;
+    phone_no?: number | null;
+    gender?: string | null;
+    address?: string | null;
     created_at?: string | null;
     updated_at?: string | null;
 }
