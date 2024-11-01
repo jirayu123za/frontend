@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import { useSubmitUserInformation } from '../hook/useUserinfo';
 
 interface CustomUser {
+  token: string;
   first_name?: string | null;
   last_name?: string | null;
   name?: string | null;
@@ -38,6 +39,7 @@ export function page() {
       user_name: '',
       email: '',
       password: '',
+      password_confirmation: '',
       phone_no: '',
       gender: '',
       address: '',
@@ -76,33 +78,14 @@ export function page() {
         formData.append('password', values.password);
         formData.append('phone_no', values.phone_no);
         formData.append('gender', values.gender);
+        formData.append('address', values.address);
+        formData.append('password_confirmation', values.password_confirmation);
 
-        mutation.mutate(formData);
+        if (session && session.user) {
+          const token = session.user.token || ''; // ดึง token จาก session
+          mutation.mutate({ formData, token });
+        }
     };
-
-  // const [profileImage, setProfileImage] = useState<string | null>(null);
-  // const fileInputRef = useRef<HTMLInputElement>(null);
-
-  // const handleAvatarClick = () => {
-  //   if (fileInputRef.current) {
-  //     fileInputRef.current.click();
-  //   }
-  // };
-
-  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = event.target.files?.[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onload = () => {
-  //       setProfileImage(reader.result as string);
-  //     };
-  //     reader.readAsDataURL(file);
-  //     reader.onload = () => {
-  //       setProfileImage(reader.result as string);
-  //       form.setFieldValue('profile_image', reader.result as string);
-  //     };
-  //   }
-  // };
 
   return (
     <>
@@ -147,6 +130,7 @@ export function page() {
                   {...form.getInputProps('last_name')}
                 />
               </Group>
+
               <Group grow mb="sm">
                 <TextInput
                   placeholder="Email"
@@ -154,22 +138,28 @@ export function page() {
                   type="email"
                   required
                   {...form.getInputProps('email')}
-                />
-              </Group>
-
-              <Group grow mb="sm">
+                />                
                 <TextInput
                   placeholder="Username"
                   label="Username"
                   required
                   {...form.getInputProps('user_name')}
                 />
-               <PasswordInput
+              </Group>
+
+              <Group grow mb="sm">
+                <PasswordInput
                   placeholder="Password"
                   label="Password"
                   required
                   {...form.getInputProps('password')}
-                />               
+                />          
+                 <PasswordInput
+                  placeholder="password_confirmation"
+                  label="password_confirmation"
+                  required
+                  {...form.getInputProps('password_confirmation')}
+                />         
               </Group>
               <Group grow mb="sm">
                 <Select

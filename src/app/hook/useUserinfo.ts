@@ -1,15 +1,15 @@
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 
-const submitUserInformation = async (formData: FormData) => {
+const submitUserInformation = async ({ formData, token }: { formData: FormData, token: string }) => {
     const { data: userInformationResponse } = await axios.post(
         'http://localhost:8000/api/update/profile',
         formData,
         {
             headers: {
                 'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`,
             },
-            withCredentials: true,
         }
     );
 
