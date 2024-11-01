@@ -121,6 +121,7 @@ export default function Example() {
                     <div className="p-4">
                       <h3 className="text-lg font-semibold">{product.name}</h3>
                       <p className="text-gray-500">{product.price} Bath</p>
+                      <p className="text-gray-500">Quantity: {product.quantity}</p>
                     </div>
                   </Card>
                 ))}
@@ -156,7 +157,7 @@ export default function Example() {
                         <button
                           className="bg-indigo-600 text-white px-8 py-3 rounded-md"
                         >
-                          Add to bag
+                          Add to Card
                         </button>
                       </div>
                     </Dialog.Panel>
