@@ -102,7 +102,7 @@ export function Login(props: PaperProps) {
   return (
     <Paper radius="md" p="xl" shadow="lg" withBorder {...props}>
       <Text size="lg" fw={500} pb={5}>
-        Welcome to Website name, {type} with
+        Welcome to Album Sphere, {type} with
       </Text>
 
       <form onSubmit={form.onSubmit(handleSubmit)}>

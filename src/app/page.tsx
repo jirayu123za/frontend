@@ -31,6 +31,7 @@ import { useProducts } from "./hook/useProducts";
 import { useAddToCart } from './hook/useCart';
 import { useCartStore } from './store/useCartStore';
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { CustomSession } from "./hook/useAuth";
 
 type Product = {
@@ -120,6 +121,11 @@ export default function Example() {
                     >
                       SHOPPING NOW
                     </button>
+                    <Button ml={20} size="lg" variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 90 }} radius={10}>
+                      <Link href="/login">
+                       Login
+                      </Link>
+                    </Button>
                   </div>
                 </div>
               </div>

@@ -28,7 +28,7 @@ export default function loginPage() {
               h={150}
               alt="logo"
             /> */}
-            <Title>example website name</Title>
+            <Title>Album Sphere</Title>
           </div>
           <Container className="w-full px-4 md:w-[500px]">
             <Login />
