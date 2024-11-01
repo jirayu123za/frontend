@@ -17,9 +17,9 @@ const CartPage = () => {
       <Nav />
 
       {/* Main Content */}
-      <div className="flex-grow flex flex-col md:flex-row gap-6 p-4">
+      <div className="flex-grow flex justify-center items-start gap-4 p-4">
         {/* Cart Items Section */}
-        <div className="flex-grow bg-white p-4 rounded shadow overflow-y-auto max-h-[70vh]">
+        <div className="flex-grow bg-white p-4 rounded shadow overflow-y-auto h-96 md:max-w-[50%]">
           <h2 className="text-xl font-semibold mb-4">My Cart</h2>
           {cartItems?.map((item) => (
             <div key={item?.CaI_id || 'default'} className="flex items-center mb-3 border-b pb-3">
@@ -70,7 +70,7 @@ const CartPage = () => {
         </div>
 
         {/* Summary Section */}
-        <div className="w-full md:w-1/3 bg-white p-4 rounded shadow max-h-[70vh]">
+        <div className="w-full md:w-1/4 bg-white p-4 rounded shadow h-96">
           <h2 className="text-lg font-semibold mb-3">Order Summary</h2>
           <div className="mb-3">
             <Input
