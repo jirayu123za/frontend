@@ -36,8 +36,7 @@ const CartPage = () => {
               />
               <div className="flex-grow">
                 <h3 className="text-md font-medium">{item?.P_name || 'Unknown Product'}</h3>
-                <p className="text-gray-500 text-sm">Color: {item?.color || 'N/A'}</p>
-                <p className="text-gray-500 text-sm">Size: {item?.size || 'N/A'}</p>
+                <p className="text-gray-500 text-sm">{item?.P_description || 'N/A'}</p>
               </div>
               <div className="text-right mx-3">
                 <p className="text-gray-500 text-sm">Each</p>

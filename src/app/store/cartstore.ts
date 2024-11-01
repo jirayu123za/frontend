@@ -6,10 +6,9 @@ export type CartItem = {
   Ca_id: string;
   P_id: string;
   P_name: string;
+  P_description: string;
   Unit_price: number;
   Quantity: number;
-  color: string;
-  size: string;
   imageUrl: string;
 };
 
