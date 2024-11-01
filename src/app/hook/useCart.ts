@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { CartItem, useCartStore } from '../store/cartStore';
 import { useMemo } from 'react';
 import axios from 'axios';
+import { notifications } from '@mantine/notifications';
 
 export const useCart = () => {
   const items = useCartStore((state) => state.items || []);
@@ -48,8 +49,18 @@ export const useAddToCart = (token: string) => {
     onSuccess: (data) => {
       data.cart.items.forEach((item: CartItem) => addItem(item));
       console.log('Product added to cart:', data);
+      notifications.show({
+        title: 'Product added to cart',
+        message: 'Product added to cart successfully!',
+        color: 'green',
+      });
     },
     onError: (error) => {
+      notifications.show({
+        title: 'Failed to add product to cart',
+        message: error.message || 'Failed to add product to cart!',
+        color: 'red',
+      });
       console.error('Failed to add product to cart:', error);
     },
   });
