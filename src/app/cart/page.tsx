@@ -46,6 +46,7 @@ const CartPage = () => {
               </div>
               <div className="mx-3">
                 <select
+                  aria-label="Quantity"
                   value={item?.Quantity || 1}
                   onChange={(e) => updateQuantity(item?.CaI_id || '', parseInt(e.target.value, 10))}
                   className="border rounded px-1 py-0.5 text-sm text-center"
@@ -71,7 +72,6 @@ const CartPage = () => {
               </button>
             </div>
           ))}
-          <Divider />
         </div>
 
         {/* Summary Section */}
@@ -97,7 +97,7 @@ const CartPage = () => {
           </div>
           <Divider className="my-1" />
           <div className="flex justify-between text-md font-semibold mb-3">
-            <span>Estimated Total</span>
+            <span>Total cost</span>
             <span>฿{total.toFixed(2)}</span>
           </div>
           <Button fullWidth size="lg" color="yellow">
