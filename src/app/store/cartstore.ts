@@ -5,16 +5,17 @@ export type CartItem = {
   CaI_id: string;
   Ca_id: string;
   P_id: string;
-  P_name: string;     
+  P_name: string;
   Unit_price: number;
   Quantity: number;
-  color: string;      
-  size: string;        
-  imageUrl: string;    
+  color: string;
+  size: string;
+  imageUrl: string;
 };
 
 type CartStore = {
   items: CartItem[];
+  setItems: (items: CartItem[]) => void;
   addItem: (item: CartItem) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
@@ -23,6 +24,7 @@ type CartStore = {
 
 export const useCartStore = create<CartStore>((set, get) => ({
   items: [],
+  setItems: (items) => set({ items }),
   addItem: (item) =>
     set((state) => ({
       items: [...state.items, item],
