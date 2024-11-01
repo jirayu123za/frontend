@@ -12,8 +12,16 @@ const CartPage = () => {
   const customSession = session as CustomSession | null;
   const token = customSession?.user?.token ?? '';
 
-  const { items, updateQuantity, removeItem, total } = useCart();
+  const { updateQuantity, removeItem } = useCart();
   const { data: cartItems, isLoading, isError } = useFetchCartItems();
+
+  // คำนวณยอดรวมของสินค้าทั้งหมด
+  const total = cartItems
+    ? cartItems.reduce(
+        (sum, item) => sum + (item.Unit_price * item.Quantity),
+        0
+      )
+    : 0;
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error loading cart items.</p>;
@@ -46,7 +54,6 @@ const CartPage = () => {
               </div>
               <div className="mx-3">
                 <select
-                  aria-label="Quantity"
                   value={item?.Quantity || 1}
                   onChange={(e) => updateQuantity(item?.CaI_id || '', parseInt(e.target.value, 10))}
                   className="border rounded px-1 py-0.5 text-sm text-center"
@@ -72,6 +79,7 @@ const CartPage = () => {
               </button>
             </div>
           ))}
+          <Divider />
         </div>
 
         {/* Summary Section */}
@@ -97,7 +105,7 @@ const CartPage = () => {
           </div>
           <Divider className="my-1" />
           <div className="flex justify-between text-md font-semibold mb-3">
-            <span>Total cost</span>
+            <span>Total Prize</span>
             <span>฿{total.toFixed(2)}</span>
           </div>
           <Button fullWidth size="lg" color="yellow">
