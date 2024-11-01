@@ -53,7 +53,9 @@ const CartPage = () => {
                 </span>
               </div>
               <div className="mx-3">
+                <label htmlFor={`quantity-${item?.CaI_id}`} className="sr-only">Quantity</label>
                 <select
+                  id={`quantity-${item?.CaI_id}`}
                   value={item?.Quantity || 1}
                   onChange={(e) => updateQuantity(item?.CaI_id || '', parseInt(e.target.value, 10))}
                   className="border rounded px-1 py-0.5 text-sm text-center"
