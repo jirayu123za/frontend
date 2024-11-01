@@ -1,4 +1,3 @@
-// src/pages/cart.tsx
 "use client";
 import { Button, Input, Divider } from '@mantine/core';
 import Nav from '../components/nav/Navbar'; // นำเข้า Nav component
@@ -14,9 +13,11 @@ const CartPage = () => {
   if (isError) return <p>Error loading cart items.</p>;
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <Nav /> {/* เพิ่ม Nav component ไว้ด้านบน */}
-      <div className="flex flex-col md:flex-row gap-8 p-6">
+
+      {/* Main Content */}
+      <div className="flex-grow flex flex-col md:flex-row gap-8 p-6">
         {/* Cart Items Section */}
         <div className="flex-grow bg-white p-4 rounded shadow">
           <h2 className="text-2xl font-semibold mb-4">My Cart</h2>
@@ -101,8 +102,8 @@ const CartPage = () => {
           </Button>
         </div>
       </div>
-      
-      <FooterCentered />
+
+      <FooterCentered /> {/* Footer อยู่ข้างล่างสุดของจอ */}
     </div>
   );
 };
