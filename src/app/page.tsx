@@ -28,6 +28,10 @@ import { Button, Card } from "@mantine/core";
 import Nav from "./components/nav/Navbar";
 import { FooterCentered } from "../app/components/footer/FooterCentered";
 import { useProducts } from "./hook/useProducts";
+import { useAddToCart } from './hook/useCart';
+import { useCartStore } from './store/useCartStore';
+import { useSession } from "next-auth/react";
+import { CustomSession } from "./hook/useAuth";
 
 type Product = {
   product_id: string;
@@ -48,14 +52,44 @@ export default function Example() {
   const { data: products = [], isLoading, error } = useProducts();
   const sectionRef = useRef<HTMLDivElement>(null);
 
+  const { data: session } = useSession();
+  const customSession = session as CustomSession | null;
+  const token = customSession?.user?.token ?? '';
+
   const handleScroll = () => {
     sectionRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const { mutate: addToCart, status } = useAddToCart(token);
+  const isAddingToCart = status === 'pending';
+  const addItemToStore = useCartStore((state) => state.addItem);
+  
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
     setIsOpen(true);
   };
+
+  const handleAddToCart = () => {
+    if (selectedProduct) {
+      addToCart(
+        { productId: selectedProduct.product_id, quantity: 1 }, // ส่ง product_id เป็น string
+        {
+          onSuccess: (data) => {
+            addItemToStore({
+              cart_item_id: data.cart_item_id,
+              product_id: selectedProduct.product_id,
+              quantity: 1,
+              unit_price: selectedProduct.price,
+            });
+            setIsOpen(false);
+          },
+          onError: (error) => {
+            console.error("Failed to add product to cart:", error);
+          },
+        }
+      );
+    }
+};
 
   return (
     <>
@@ -154,11 +188,13 @@ export default function Example() {
                         </p>
                       </div>
                       <div className="mt-4 flex justify-end">
-                        <button
+                        <Button
+                          onClick={handleAddToCart}
                           className="bg-indigo-600 text-white px-8 py-3 rounded-md"
+                          disabled={isAddingToCart}
                         >
-                          Add to Card
-                        </button>
+                          {isAddingToCart ? "Adding..." : "Add to Cart"}
+                        </Button>
                       </div>
                     </Dialog.Panel>
                   </div>
